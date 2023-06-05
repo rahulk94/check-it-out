@@ -8,6 +8,7 @@ export const helpText = () => {
     [chalk.bold('enter'), 'Select highlighted item'],
     [chalk.bold('y'), 'Copy highlighted item'],
     [chalk.bold('space'), 'Git log'],
+    [chalk.bold('d'), 'Prompt to delete highlighted item'],
     [chalk.bold('&'), 'Filter lines - enter blank search to show all lines'],
     [chalk.bold('/'), 'Search lines'],
     [chalk.bold('n'), 'Jump to next search result'],

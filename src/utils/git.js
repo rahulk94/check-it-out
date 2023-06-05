@@ -126,6 +126,12 @@ export const doFetchBranches = () => {
   return execGit(args);
 };
 
+export const forceDeleteBranch = selectedBranch => {
+  const args = ['branch', '-D', selectedBranch];
+
+  return execGit(args);
+};
+
 /**
  * Format output from getBranchesFrom() and return an array of arrays containing
  * formatted lines for the data table.

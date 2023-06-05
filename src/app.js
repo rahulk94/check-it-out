@@ -8,6 +8,7 @@ import { write as copyToClipBoard } from 'clipboardy';
 import {
   closeGitResponse,
   doCheckoutBranch,
+  forceDeleteBranch,
   doFetchBranches,
   getRefData,
 } from './utils/git';
@@ -307,6 +308,37 @@ export const start = async args => {
     } catch (error) {
       logger.error(`Unable to copy : ${JSON.stringify(error)}`);
     }
+  });
+
+  branchTable.key('d', function() {
+    const selection = parseSelection(this.items[this.selected].content);
+    const branchName = selection[2];
+
+    if (state.currentRemoteIndex !== 0) {
+      logger.error('Branch deletion is only available on heads');
+      return;
+    }
+
+    getPrompt(
+      `Are you sure you want to force delete ${branchName}? (only y is accepted)`,
+      async value => {
+        if (value === 'y') {
+          try {
+            await forceDeleteBranch(branchName);
+
+            process.stdout.write(
+              `Successfully deleted branch ${chalk.bold(branchName)}\n`,
+            );
+
+            process.exit(0);
+          } catch (error) {
+            logger.error(`Failed to delete branch ${branchName}`);
+          }
+        } else {
+          logger.log('Skipping deletion');
+        }
+      },
+    );
   });
 
   branchTable.focus();
